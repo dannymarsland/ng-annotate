@@ -337,7 +337,7 @@ function matchRegular(node, ctx) {
 
     // short-cut implicit config special case:
     // angular.module("MyMod", function(a) {})
-    if (obj.name === "angular" && method.name === "module") {
+    if (obj.name && obj.name.indexOf("angular") === 0 && method.name === "module") {
         const args = node.arguments;
         if (args.length >= 2) {
             node.$chained = chainedRegular;
@@ -399,7 +399,7 @@ function isReDef(node, ctx) {
 // Long form: angular.module(*).controller("MyCtrl", function($scope, $timeout) {});
 function isLongDef(node) {
     return node.callee &&
-        node.callee.object && node.callee.object.name === "angular" &&
+        node.callee.object && node.callee.object.name && node.callee.object.name.indexOf("angular") === 0 &&
         node.callee.property && node.callee.property.name === "module";
 }
 
